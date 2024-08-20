@@ -1,0 +1,9 @@
+# 虛擬環境
+.venv/
+
+# Python 編譯文件
+__pycache__/
+*.py[cod]
+
+# 機密配置文件
+.env

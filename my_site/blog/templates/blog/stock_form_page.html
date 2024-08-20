@@ -1,0 +1,18 @@
+{% extends "blog/stock_base.html" %} 
+{% load bootstrap5 %}
+
+{% block title %}
+股票庫存表單
+{% endblock %}
+
+{% block content %}
+<section id="form-section">
+    <h2>股票庫存表單</h2>
+    <form action="{%url 'stock-stock'%}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+</section>
+{% endblock content %}
+

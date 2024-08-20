@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Blog{% endblock title %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/post.css' %}">
+<link rel="stylesheet" href="{% static 'blog/index.css' %}">
+{% endblock css_files %}
+
+{% block content %}
+<section id="welcome" class="text-center mb-4">
+    <header>
+        <img src="{% static 'blog/images/royzhang.jpg' %}" alt="Roy - The Author Of This Blog" class="img-fluid rounded-circle mb-3">
+        <h2>ROY'S BLOG</h2>
+    </header>
+    <p>嗨!我是Roy~我喜歡寫有關科技和世界的文章！</p>
+</section>
+
+<section id="latest-posts">
+    <h2>我的最新貼文</h2>
+    <ul class="list-unstyled">
+        {% for post in posts %}
+        {% include "blog/includes/post.html" %}
+        {% endfor %}
+    </ul>
+</section>
+{% endblock content %}

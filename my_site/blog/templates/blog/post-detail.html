@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ post.title }}
+{% endblock title %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/post-detail.css' %}" />
+{% endblock css_files %}
+
+{% block content %}
+<section id="summary">
+    <h2>{{ post.title }}</h2>
+    <div>
+        {% for tag in post_tags %}
+        <span class="tag">{{ tag.caption }}</span>
+        {% endfor %}
+    </div>
+    <div id="read-later">
+        <form action="{% url 'post-detail-page' post.slug %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="true" name="read_later">
+            <input type="hidden" value="{{ post.id }}" name="post_id">           
+            <button>
+                {% if saved_for_later %}
+                從稍後觀看列表移除此貼文
+                {% else %}
+                將此貼文新增到稍後觀看列表
+                {% endif %}
+            </button>
+        </form>
+    </div>
+    <article>
+        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+        <address>By <a href="mailto:{{ post.author.email_address }}">{{ post.author }}</a></address>
+        <div>
+            最後更新於 <time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"d M Y" }}</time>
+        </div>
+    </article>
+</section>
+
+<main>
+    <h3>{{ post.content|linebreaks }}</h3>
+</main>
+
+<section id="comments">
+    {% if comment_form.errors %}
+    <div id="alert">
+        <h2>保存評論失敗</h2>
+        <p>請檢查文章下方的評論表單並修正錯誤</p>
+        <a href="#comment-form">Fix!</a>
+    </div>
+    {% endif %}
+    <ul>
+        {% for comment in comments %}
+        <li>
+            <h2>{{ comment.user_name }}</h2>
+            <p>{{ comment.text|linebreaks }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section id="comment-form">
+    <h2>您的評論</h2>
+    <form action="{% url 'post-detail-page' post.slug %}" method="POST" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="comment_form" value="true">
+        {% for form_field in comment_form %}
+        <div class="form-control {% if form_field.errors %}invalid{% endif %}">
+            {{ form_field.label_tag }}
+            {{ form_field }}
+            {{ form_field.errors }}
+        </div>
+        {% endfor %}
+        <button type="submit">保存評論</button>
+    </form>
+</section>
+
+{% endblock %}

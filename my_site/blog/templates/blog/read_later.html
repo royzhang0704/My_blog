@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% load static%}
+
+{%block title%}
+My Read Later Posts
+{%endblock%}
+
+{%block css_files%}
+<link rel="stylesheet" href="{%static "blog/stored-posts.css" %}">
+{%endblock%}
+
+{%block content%}
+
+<section id="stored-posts">
+    <h1>稍後觀看清單列表</h1>
+    {%if not has_posts%}
+    <p> 並無任何文章在稍後觀看列表中</p>
+    {%endif%}
+    <ul>
+        {%for post in posts%}
+        <li> 
+            <a href="{%url "post-detail-page" post.slug%}">
+                {{post.title}}
+            </a>
+        </li>
+        {%endfor%}
+    </ul>
+</section>
+{%endblock%}

@@ -1,0 +1,101 @@
+{% extends "blog/stock_base.html" %} 
+{% load bootstrap5 %}
+
+{% block content %}
+<div id="cash-info">
+  <h2>現金庫存</h2>
+  <table class="table table-bordered">
+    <tr>
+      <td>台幣總額: {{ ntd_total}}元</td>
+      <td>美金總額: {{ usd_total}}元</td>
+      <td>
+        今日匯率:{{usd_to_twd_rate}}
+      </td>
+      <td>現金總額:{{ total_cash }}元</td>
+    </tr>
+  </table>
+
+  <h4>現金更動紀錄</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">台幣</th>
+        <th scope="col">美金</th>
+        <th scope="col">註記</th>
+        <th scope="col">時間</th>
+        <th scope="col">修改資料</th>
+        <th scope="col">刪除資料</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cash in cash_data %}
+      <tr>
+        <td>{{ cash.id }}</td>
+        <td>{{ cash.ntd }}</td>
+        <td>{{ cash.usd }}</td>
+        <td>{{ cash.note }}</td>
+        <td>{{ cash.date }}</td>
+        <td>
+          <form action="{% url 'stock-index' %}" method="post">
+            <input type="hidden" name="id" value="{{ cash.id }}" />
+            {% csrf_token %}
+            <button type="submit" name="edit_cash" class="btn btn-primary">修改此筆資料</button>
+        </form>
+      </td>
+      <td>
+        <form action="{% url 'stock-index' %}" method="post">
+            <input type="hidden" name="id" value="{{ cash.id }}" />
+            {% csrf_token %}
+            <button type="submit" name="delete_cash" class="btn btn-danger">刪除此筆資料</button>
+        </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<hr />
+
+<div id="stock-info">
+  <h2>股票庫存</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">股票代號</th>
+        <th scope="col">持有股數</th>
+        <th scope="col">目前股價</th>
+        <th scope="col">目前市值</th>
+        <th scope="col">股票資產占比(%)</th>
+        <th scope="col">購買總成本(包含手續費)</th>
+        <th scope="col">平均成本</th>
+        <th scope="col">報酬率(%)</th>
+        <th scope="col">刪除</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stock in stock_data %}
+      <tr>
+        <td>{{ stock.stock_symbol }}</td>
+        <td>{{ stock.stock_count }}</td>
+        <td>{{ stock.current_price }}</td>
+        <td>{{ stock.current_value }}</td>
+        <td>{{ stock.stock_percentage }}%</td>
+        <td>{{ stock.total_cost }}</td>
+        <td>{{ stock.average_cost }}</td>
+        <td>{{ stock.rate_of_return }}%</td>
+        <td>
+          <form action="{%url 'stock-index'%}" method="post">
+            <input type="hidden" name="stock_id" value="{{stock.stock_symbol}}" />
+            {% csrf_token %}
+            <button type="submit" name="delete_stock" class="btn btn-danger">刪除</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
