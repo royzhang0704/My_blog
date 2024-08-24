@@ -15,7 +15,7 @@
 
 - Python 3.9 或更高版本
 - pip
-- Virtualenv（可選但推薦使用）
+- Virtualenv（可選，但推薦使用）
 
 ### 設置
 
@@ -51,17 +51,29 @@
     - DATABASE_USER: 你的資料庫用戶名
     - DATABASE_PASSWORD: 你的資料庫密碼
 
-6. **應用數據遷移**：
+6. **生成 SECRET_KEY**（如果需要生成新的 SECRET_KEY）：
+    - 進入 Django Shell：
+        ```bash
+        python manage.py shell
+        ```
+    - 在 Django Shell 中運行以下 Python 代碼來生成一個新的 SECRET_KEY：
+        ```python
+        from django.core.management.utils import get_random_secret_key
+        print(get_random_secret_key())
+        ```
+    - 複製生成的 SECRET_KEY 並把它貼到 `.env` 文件中的 SECRET_KEY 欄位。
+
+7. **應用數據遷移**：
     ```bash
     python3 manage.py migrate
     ```
 
-7. **加載初始 JSON 數據到資料庫**：
+8. **加載初始 JSON 數據到資料庫**：
     ```bash
     python manage.py loaddata initial_data.json
     ```
 
-8. **運行開發伺服器**：
+9. **運行開發伺服器**：
     ```bash
     python3 manage.py runserver
     ```
@@ -93,4 +105,3 @@
 ## 聯繫方式
 
 如有任何問題或反饋，請隨時聯繫我! [royzhang0704@gmail.com](mailto:royzhang0704@gmail.com)。
-
