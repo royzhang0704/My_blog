@@ -222,13 +222,14 @@ class ReadLater(View):
         return render(request, "blog/read_later.html", context)
 
 
+
 def cash_form_page(request, cash_id=None):
     """
     顯示或處理現金表單的頁面。
 
     參數:
         request: HTTP 請求對象。
-        id: 現金紀錄的 ID。
+        cash_id: 現金紀錄的 ID。
 
     回傳:
         HttpResponse: 包含現金表單頁面的回應。
@@ -241,10 +242,12 @@ def cash_form_page(request, cash_id=None):
             return HttpResponseRedirect(reverse("stock-index"))
     else:
         form = CashForm(instance=cash)
+    
     return render(request, "blog/cash_form_page.html", {
         "form": form,
         "cash": cash
     })
+
 
 
 def stock_form_page(request, symbol=None):
@@ -259,7 +262,6 @@ def stock_form_page(request, symbol=None):
         HttpResponse: 包含股票表單頁面的回應。
     """
     stock = get_object_or_404(Stock, stock_symbol=symbol) if symbol else None
-
     if request.method == "POST":
         form = StockForm(request.POST, instance=stock)
         if form.is_valid():
@@ -303,13 +305,10 @@ def stock_index(request):
             return redirect("stock-index")
         elif "edit_cash" in request.POST:
             cash_id = request.POST.get("id")
-            return redirect("edit-cash", id=cash_id)
-        elif "delete_stock" in request.POST:
+            return redirect("edit-cash", cash_id=cash_id)
+        else: #delete_stock
             stock_stock_symbol = request.POST.get("stock_id")
             Stock.objects.filter(stock_symbol=stock_stock_symbol).delete()
-        elif "edit-stock" in request.POST:
-            stock_symbol = request.POST.get("stock_symbol")
-            return redirect('edit-stock', stock_symbol=stock_symbol)
 
     context = {}
     stock_data = []

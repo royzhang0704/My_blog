@@ -8,10 +8,10 @@
 {% block content %}
 <section id="form-section">
     <h2>現金庫存表單</h2>
-    <form action="{% if cash %}{% url 'edit-cash' id=cash.id %}{% else %}{% url 'stock-cash' %}{% endif %}" method="POST">
+    <form action="{% if cash %}{% url 'edit-cash' cash_id=cash.id %}{% else %}{% url 'stock-cash' %}{% endif %}" method="POST">
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-primary">保存</button>
-    </form>
+    </form>    
 </section>
 {% endblock content %}

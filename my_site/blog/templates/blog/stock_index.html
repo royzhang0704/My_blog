@@ -37,12 +37,12 @@
         <td>{{ cash.note }}</td>
         <td>{{ cash.date }}</td>
         <td>
-          <form action="{% url 'stock-index' %}" method="post">
-            <input type="hidden" name="id" value="{{ cash.id }}" />
+          <form action="{% url 'edit-cash' cash_id=cash.id %}" method="get">
             {% csrf_token %}
             <button type="submit" name="edit_cash" class="btn btn-primary">修改此筆資料</button>
-        </form>
-      </td>
+        </form>        
+        </td>        
+
       <td>
         <form action="{% url 'stock-index' %}" method="post">
             <input type="hidden" name="id" value="{{ cash.id }}" />

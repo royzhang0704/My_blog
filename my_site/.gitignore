@@ -1,5 +1,6 @@
 # 虛擬環境
-.venv/
+test/
+.venv
 
 # Python 編譯文件
 __pycache__/
